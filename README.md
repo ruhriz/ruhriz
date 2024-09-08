@@ -2,8 +2,8 @@
 
 ## Education 
 
-* __Hons. Bachelor of Science in Computer Science__ | York University (Sep. 2021 - Present)
-* __OSSD__ | Father Michael McGivney Catholic Academy (Sep. 2017 – Jun 2021)
+* __Hons. Bachelor of Science in Computer Science__  York University (Sep. 2021 - Present)
+* __OSSD__  Father Michael McGivney Catholic Academy (Sep. 2017 – Jun 2021)
 
 
 <!--
