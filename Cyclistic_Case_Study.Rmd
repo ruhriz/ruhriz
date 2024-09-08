@@ -1,0 +1,354 @@
+---
+title: "Case study: How does a bike-share navigate speedy success?"
+author: "Ruhullah Rizvi"
+date: "2024-08-10"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(here)
+library(tidyverse)
+library(skimr)
+library(knitr)
+
+```
+
+## Scenario
+
+You are a junior data analyst working on the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success
+depends on maximizing the number of annual memberships. Therefore, your team wants to
+understand how casual riders and annual members use Cyclistic bikes differently. From these
+insights, your team will design a new marketing strategy to convert casual riders into annual
+members. But first, Cyclistic executives must approve your recommendations, so they must be
+backed up with compelling data insights and professional data visualizations.
+
+### Characters and teams
+
+* Cyclistic: A bike-share program that features more than 5,800 bicycles and 600
+docking stations. Cyclistic sets itself apart by also offering reclining bikes, hand
+tricycles, and cargo bikes, making bike-share more inclusive to people with disabilities
+and riders who can’t use a standard two-wheeled bike. The majority of riders opt for
+traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more
+likely to ride for leisure, but about 30% use the bikes to commute to work each day.
+
+* Lily Moreno: The director of marketing and your manager. Moreno is responsible for
+the development of campaigns and initiatives to promote the bike-share program.
+These may include email, social media, and other channels.
+
+* Cyclistic marketing analytics team: A team of data analysts who are responsible for
+collecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy.
+You joined this team six months ago and have been busy learning about Cyclistic’s
+mission and business goals—as well as how you, as a junior data analyst, can help
+Cyclistic achieve them.
+
+* Cyclistic executive team: The notoriously detail-oriented executive team will decide
+whether to approve the recommended marketing program.
+
+### About the company
+
+In 2016, Cyclistic launched a successful bike-share offering. Since then, the program has grown to a fleet of 5,824 bicycles that are geotracked and locked into a network of 692 stations across Chicago. The bikes can be unlocked from one station and returned to any other station in the system anytime.
+
+Until now, Cyclistic’s marketing strategy relied on building general awareness and appealing to broad consumer segments. One approach that helped make these things possible was the
+flexibility of its pricing plans: single-ride passes, full-day passes, and annual memberships. Customers who purchase single-ride or full-day passes are referred to as casual riders. Customers who purchase annual memberships are Cyclistic members.
+
+Cyclistic’s finance analysts have concluded that annual members are much more profitable
+than casual riders. Although the pricing flexibility helps Cyclistic attract more customers,
+Moreno believes that maximizing the number of annual members will be key to future growth.
+Rather than creating a marketing campaign that targets all-new customers, Moreno believes
+there is a solid opportunity to convert casual riders into members. She notes that casual riders are already aware of the Cyclistic program and have chosen Cyclistic for their mobility needs.
+
+Moreno has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members. In order to do that, however, the team needs to better understand how
+annual members and casual riders differ, why casual riders would buy a membership, and how
+digital media could affect their marketing tactics. Moreno and her team are interested in
+analyzing the Cyclistic historical bike trip data to identify trends.
+
+# Ask
+
+Three questions will guide the future marketing program:
+
+1. How do annual members and casual riders use Cyclistic bikes differently?
+2. Why would casual riders buy Cyclistic annual memberships?
+3. How can Cyclistic use digital media to influence casual riders to become members?
+
+
+Moreno has assigned you the first question to answer: How do annual members and casual
+riders use Cyclistic bikes differently?
+
+You will produce a report with the following deliverables:
+
+1. A clear statement of the business task
+2. A description of all data sources used
+3. Documentation of any cleaning or manipulation of data
+4. A summary of your analysis
+5. Supporting visualizations and key findings
+6. Your top three recommendations based on your analysis
+
+### Business Task
+
+As a junior data analyst on the marketing team at Cyclistic, my task is to dive into our historical bike trip data to uncover key differences between casual riders and annual members. I need to identify patterns and trends that explain why casual riders might consider switching to an annual membership. With these insights, I will help design targeted marketing strategies aimed at converting casual riders into annual members. My goal is to present compelling data insights and professional visualizations that will support my recommendations and convince Cyclistic executives to approve and implement these new strategies to drive membership growth and ensure the company’s future success.
+
+# Prepare
+
+The Cyclistic trip data, provided by Motivate International Inc., is available for download and covers the last six months of 2023 to the first six months of 2024, from July to June. This first-party data is organized into monthly datasets with historical trip records, which include 13 attributes: started_at, ended_at, ride_id, rideable_type, start_station_name, start_station_id, end_station_name, end_station_id, member_casual, start_lat, start_lng, end_lat, and end_lng. The data is publicly accessible and licensed for use under this [__license__](https://divvybikes.com/data-license-agreement). Privacy concerns are addressed by omitting personally identifiable information, which may limit the depth of analysis. Standard practices are followed for privacy, security, and accessibility. Potential issues include biases in the data due to its first-hand collection and limitations in analyzing casual riders because past purchases cannot be linked to personal details
+
+# Process
+
+First, we begin with loading all the data sets for each month, and compiling them into a singular data set.
+
+```{r months_loading}
+
+filepath <- here("Bike Data CSV 2024", "202401-divvy-tripdata.csv")
+month_1 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2024", "202402-divvy-tripdata.csv")
+month_2 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2024", "202403-divvy-tripdata.csv")
+month_3 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2024", "202404-divvy-tripdata.csv")
+month_4 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2024", "202405-divvy-tripdata.csv")
+month_5 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2024", "202406-divvy-tripdata.csv")
+month_6 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2023", "202307-divvy-tripdata.csv")
+month_7 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2023", "202308-divvy-tripdata.csv")
+month_8 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2023", "202309-divvy-tripdata.csv")
+month_9 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2023", "202310-divvy-tripdata.csv")
+month_10 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2023", "202311-divvy-tripdata.csv")
+month_11 <- read_csv(file = filepath)
+
+filepath <- here("Bike Data CSV 2023", "202312-divvy-tripdata.csv")
+month_12 <- read_csv(file = filepath)
+
+months <- bind_rows(list(month_1, month_2, month_3, month_4, month_5, month_6, 
+                         month_7, month_8, month_9, month_10, month_11, month_12))
+
+```
+
+Then, we use the skimr library to get a quick overview of each of the attributes in the data set.
+
+```{r skimmed months}
+skim_without_charts(months)
+```
+
+Here, we omit any rows containing null or empty values and remove any duplicate rows.
+
+```{r drop_missing and drop_duplicates}
+months <- na.omit(months) %>%
+  distinct()
+```
+
+Now we introduce a new attribute for the purposes of our analysis, which is ride_length. ride_length is calculated by subtracting the started_at column from the ended_at column to determine the length of each trip, in seconds.
+```{r ride_length}
+new_months <- months %>% 
+  mutate(ride_length = ended_at - started_at)
+```
+
+After creating a new attribute, we check for any potential issues in the new values using the summarise function.
+
+```{r chart_0}
+chart_0 <- new_months %>%
+  summarise(mean(ride_length), max(ride_length), min(ride_length), num_of_rides = n())
+
+kable(chart_0)
+```
+
+In the above chart, the minimum values found were negative, and the maximum values are very far from the mean of the data. To address this problem, we filter out any trips which took less than 1 minute and more than 3 hours.
+
+```{r ride_length_filter}
+new_months <- new_months %>% 
+  filter(ride_length > 60) %>%
+  filter(ride_length < 11000)
+```
+
+Additionally, we create new attributes for the day of the week and the month the trip was started in, using the started_at column.
+
+```{r day_&_month}
+new_months <- new_months %>% 
+  mutate(day_of_week = wday(started_at)) %>%
+  mutate(month = month(started_at))
+
+```
+
+At the end of our data cleaning, we check how much of our data entries we are left with. 
+
+```{r}
+chart_0 <- new_months %>%
+  summarise(number_of_rides = n())
+kable(chart_0)
+```
+
+The number of remaining rows is 4191598, which is 73.1% of the original dataset.
+
+# Analyze
+
+Moving onto analysis, we examine the difference between the customer types using the different attributes in the data. This chart is examining the mean, maximum, and minimum of ride_length, as well as the number of rides based on the type of customer. Casuals have a higher average length of rides, but have a lower number of rides overall, whereas members have a shorter average ride length but go on rides more frequently.
+
+```{r chart_1}
+chart_1 <- new_months %>%
+  group_by(member_casual) %>%
+  summarise(mean(ride_length), max(ride_length), min(ride_length), num_of_rides = n())
+kable(chart_1)
+```
+
+Next, we look at the mean ride_length based on the the day of the week. Casuals and members ride the longest on Mondays, for an average of 1495 seconds and 823 seconds respectively. 
+
+```{r chart_2}
+chart_2 <- new_months %>%
+  group_by(member_casual, day_of_week) %>%
+  summarise(mean(ride_length))
+
+kable(chart_2)
+```
+
+Here, we examine the number of rides based on the day of the week. Casuals went on the highest number of rides on Sundays, accounting for 304127 rides, while members went on the highest number of rides on Thursdays, at 440020 rides.  
+
+```{r chart_3}
+chart_3 <- new_months %>%
+  group_by(member_casual, day_of_week) %>%
+  summarise(num_of_rides = n())
+
+kable(chart_3)
+```
+
+Then, we look at the number of rides based on the type of bike being used by the customer. Classic bikes are the most popular for both casuals and members, accounting for roughly 66.7% of all rides, while docked bikes are not used by members at all.
+
+```{r chart_4}
+chart_4 <- new_months %>%
+  group_by(member_casual, rideable_type) %>%
+  summarise(sum_of_rides = n())
+
+kable(chart_4)
+```
+
+The following charts show the 10 most popular start stations for casual and member customers respectively. Casuals and members do not have any stations with shared popularity, with Streeter Dr & Grand Ave being the most frequent for casuals and Clinton St & Washington Blvd being the most frequent for members. For casuals in particular, tourist locations seem to have an overwhelming popularity, seeing as this list includes a park, aquarium, harbor, theater, planetarium, and two stations near the lakeshore. 
+
+```{r chart_5}
+chart_5 <- new_months %>%
+  filter(member_casual == "casual") %>%
+  group_by(start_station_name) %>%
+  summarise(frequency = n()) %>%
+  arrange(desc(frequency)) %>%
+  head(10)
+
+kable(chart_5)
+```
+```{r chart_6}
+chart_6 <- new_months %>%
+  filter(member_casual == "member") %>%
+  group_by(start_station_name) %>%
+  summarise(frequency = n()) %>%
+  arrange(desc(frequency)) %>%
+  head(10)
+
+kable(chart_6)
+```
+
+Now, we repeat a similar analysis as we did prior using the days of the week, now using months of the year instead. The following chart describes mean, maximum, and minimum ride_length by month. May and June were where casuals and members went on their longest rides, at 1464 seconds and 800 seconds on average.
+
+```{r chart_7}
+
+chart_7 <- new_months %>%
+  group_by(member_casual, month) %>%
+  summarise(mean(ride_length), max(ride_length), min(ride_length))
+
+kable(chart_7)
+```
+
+Finally, this chart shows the number of rides by month for members and casuals. Casuals went on the most rides in July, at 239142 rides, and members went on the most rides in August, at 343786 rides.
+
+```{r chart_8}
+chart_8 <- new_months %>%
+  group_by(member_casual, month) %>%
+  summarise(num_of_rides = n())
+
+kable(chart_8)
+```
+
+# Share
+
+Using the charts in our analysis above, we will derive graphs to visually explore our findings in the dataset. They will highlight the underlying trends and help to present the key ideas. The following graph depicts the percentage of rides made on the different bike types, by casuals and members respectively. Here, it is apparent that there is not much of a difference between proportion of members and casuals that use the different types of bikes, except for the small population of docked bike casual users.
+
+```{r first_graph}
+
+temp_chart <- chart_4 %>%
+  filter(member_casual == "casual")
+
+pct <- round(100*temp_chart$sum_of_rides/sum(temp_chart$sum_of_rides))
+
+pie(temp_chart$sum_of_rides, paste(temp_chart$rideable_type, sep = " ", pct, "%"), col = c("magenta", "blue", "green"))
+
+temp_chart <- chart_4 %>%
+  filter(member_casual == "member")
+
+pct <- round(100*temp_chart$sum_of_rides/sum(temp_chart$sum_of_rides))
+
+pie(temp_chart$sum_of_rides, paste(temp_chart$rideable_type, sep = " ", pct, "%"), col = c("pink", "cyan", "green"))
+
+
+```
+
+This graph presents how the number of rides change over the days of the week for members and casuals. As is shown, members tend to ride the most near the middle of the week, Tuesday to Thursday. In comparison, casuals ride the most near the weekends, Friday to Sunday.
+
+```{r second_graph}
+chart_3 %>%
+  ggplot() +
+  geom_line(mapping = aes(x = day_of_week, y = num_of_rides, colour = member_casual)) 
+```
+
+Here, this graph compares the average ride length on different days of the week, between members and casuals. In general, casual members tend to ride for much longer than members, and both groups ride longer on the weekends as well.
+
+```{r third_graph}
+chart_2 %>%
+  ggplot() +
+  geom_line(mapping = aes(x = day_of_week, y = `mean(ride_length)`, colour = member_casual))
+  
+```
+
+The next two graphs are similar to the two above, but show the average ride time and number of rides over the months rather than the week. Similarly to before, casuals ride for longer on average as compared to members. The ride lengths for both members and casuals rises as the year approaches June, although it rises much more rapidly for casuals, and begins to fall afterwards towards the end of the year.
+
+```{r fourth_graph}
+chart_7 %>%
+  ggplot() +
+  geom_line(mapping = aes(x = month, y = `mean(ride_length)`, colour = member_casual))
+```
+
+Finally, this graph shows the number of rides made by members and casuals, month by month. Overall, the number of rides both members and casuals go on increase as the it approaches June, and falls afterwards as the year ends. However, members go on significantly more rides than casuals throughout the entire year.
+
+```{r fifth_graph}
+chart_8 %>%
+  ggplot() + geom_line(mapping = aes(x = month, y = num_of_rides, colour = member_casual))
+```
+
+# Act
+
+Based on the analysis and graphs provided, my top three recommendations for converting casual riders into annual members are:
+
+1. Promote Membership for Longer Rides: Offer incentives for completing rides longer than 1000 seconds (~17 mins.). Since casual riders often take trips of this length and longer, encouraging them with promotions could persuade those who enjoy longer rides to become members.
+
+2. Target Weekend and Summer Rides: Implement promotions for rides taken on weekends and during summer months (June - August). Casual riders tend to start more rides during these times, so offering bonuses or discounts for these periods could help attract them to membership.
+
+3. Incentivize Rides Near Tourist Attractions: Create promotions for starting trips near popular tourist locations and attractions. Since casual riders frequently begin their rides at these spots, offering member benefits for starting rides at or near these locations could entice them to sign up for a membership.
+
+# Conclusion
+
+
+This data analysis project offers valuable insights into customer behavior and preferences for Cyclistic's bike-sharing service. The recommendations are designed to enhance the service and encourage more casual users to become annual members. Thank you for joining me on this data-driven exploration. I hope you found the analysis both informative and engaging!
+
