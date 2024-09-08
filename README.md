@@ -13,7 +13,7 @@
 
 ## Projects
 #### **[Case study: How does a bike-share navigate speedy success?](./projects/Cyclistic_Case_Study/Cyclistic_Case_Study.html)**
-![Bike Share](https://github.com/ruhriz/ruhriz.github.io/blob/main/assets/images/bike_share_image.png)
+![Bike Share](/assets/images/bike_share_image.png)
 * As a hypothetical junior data analyst at Cyclistic, I thoroughly analyzed the different usage patterns of casual riders compared to annual members of the bike-share service.
 * Developed a comprehensive marketing strategy aimed at converting casual riders into annual members, using detailed insights derived from my data analysis.
 * My recommendations were substantiated with compelling data insights and professional visualizations to ensure they were persuasive and gained approval from stakeholders.
