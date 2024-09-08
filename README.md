@@ -1,4 +1,10 @@
-## Hi there 👋
+# Computer Science Student
+
+## Education 
+
+* Hons. Bachelor of Science - York University (Sep. 2021 - Present)
+* OSSD - Father Michael McGivney Catholic Academy (Sep. 2017 – Jun 2021)
+
 
 <!--
 **ruhriz/ruhriz** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
