@@ -2,8 +2,8 @@
 
 ## Education 
 
-* Hons. Bachelor of Science - York University (Sep. 2021 - Present)
-* OSSD - Father Michael McGivney Catholic Academy (Sep. 2017 – Jun 2021)
+* Hons. Bachelor of Science - York University (_Sep. 2021 - Present_)
+* OSSD - Father Michael McGivney Catholic Academy (_Sep. 2017 – Jun 2021_)
 
 
 <!--
